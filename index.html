@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HIKAM · immersive portfolio</title>
+  <!-- Google Font & modern clean style -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+      position: relative;
+    }
+    /* ---------- FULL PAGE FLOATING "HIKAM WEBSITE" BACKGROUND ---------- */
+    body::before {
+      content: "HIKAM WEBSITE";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 0;
+      font-weight: 800;
+      font-size: clamp(5rem, 20vw, 12rem);
+      color: rgba(30, 74, 107, 0.06);  /* very subtle, matches theme */
+      white-space: nowrap;
+      letter-spacing: 12px;
+      text-transform: uppercase;
+      transform: rotate(-5deg) scale(1.2);
+      animation: fullPageFloat 16s infinite ease-in-out;
+    }
+    @keyframes fullPageFloat {
+      0% { transform: rotate(-5deg) scale(1.2) translateY(0px); }
+      50% { transform: rotate(-3deg) scale(1.25) translateY(-25px); }
+      100% { transform: rotate(-5deg) scale(1.2) translateY(0px); }
+    }
+    /* keep all content above background */
+    header, section, footer {
+      position: relative;
+      z-index: 2;
+    }
+    /* gradient header — still with its own floating (but we keep minimal to avoid clash) */
+    header {
+      background: linear-gradient(145deg, #0f2b3d, #1b4a5f);
+      color: white;
+      padding: 2.5rem 1.5rem 2rem;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,30,40,0.15);
+      border-bottom-left-radius: 2rem;
+      border-bottom-right-radius: 2rem;
+      overflow: hidden;
+    }
+    /* remove inner floating bg text — we have full page version */
+    .floating-bg-text {
+      display: none;
+    }
+    header h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    .hikam-badge {
+      background: #f5c542;
+      color: #0f2b3d;
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding: 0.2rem 1rem;
+      border-radius: 60px;
+      box-shadow: 0 4px 10px rgba(255,215,0,0.5);
+      animation: subtleGlow 3s infinite ease-in-out;
+      position: relative;
+      z-index: 2;
+    }
+    @keyframes subtleGlow {
+      0% { box-shadow: 0 4px 10px #f5c542; transform: scale(1); }
+      50% { box-shadow: 0 8px 20px #ffd966, 0 0 8px #f5c542; transform: scale(1.02); }
+      100% { box-shadow: 0 4px 10px #f5c542; transform: scale(1); }
+    }
+    nav {
+      margin: 1.8rem 0 0.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: 0.2s;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 4px;
+    }
+    nav a:hover {
+      border-bottom-color: #f5c542;
+      color: #f5c542;
+    }
+    /* section containers - with slight translucency to see background? no, keep clean */
+    section {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 1.5rem 2rem;
+      background: white;
+      border-radius: 2rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.04);
+    }
+    h2 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #0f2b3d;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      border-left: 6px solid #1e4a6b;
+      padding-left: 1.2rem;
+    }
+    h2 i {
+      color: #1e4a6b;
+      font-size: 2rem;
+    }
+    /* ---------- HOME PAGE (floating picture) ---------- */
+    #home {
+      background: linear-gradient(135deg, #ffffff 0%, #f2f9ff 100%);
+      border: 1px solid #d9eaf5;
+      margin-top: 2rem;
+      padding: 3rem 2.5rem;
+    }
+    .home-container {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 3rem;
+    }
+    .home-intro {
+      flex: 2 1 350px;
+    }
+    .home-intro .greeting {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #1e4a6b;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+    .home-intro h3 {
+      font-size: 3.2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #0b2d3b;
+      margin-bottom: 1.2rem;
+    }
+    .home-intro h3 span {
+      background: linear-gradient(145deg, #1b4a5f, #256b85);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .highlight-line {
+      font-size: 1.3rem;
+      color: #2b5d76;
+      margin-bottom: 1.8rem;
+      font-weight: 400;
+      border-left: 4px solid #f5c542;
+      padding-left: 1.2rem;
+    }
+    .home-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin: 2rem 0;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1b4a5f;
+    }
+    .stat-label {
+      font-size: 0.9rem;
+      color: #54738f;
+    }
+    .home-cta {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .btn-primary, .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.9rem 2.2rem;
+      border-radius: 60px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s;
+      border: 2px solid transparent;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .btn-primary {
+      background: #1e4a6b;
+      color: white;
+      box-shadow: 0 8px 18px rgba(0,70,100,0.25);
+    }
+    .btn-primary:hover {
+      background: #0f3b52;
+      transform: translateY(-3px);
+    }
+    .btn-secondary {
+      background: white;
+      color: #1e4a6b;
+      border: 2px solid #1e4a6b;
+    }
+    .btn-secondary:hover {
+      background: #e3f0fa;
+      transform: translateY(-3px);
+    }
+    .home-visual {
+      flex: 1 1 280px;
+      display: flex;
+      justify-content: center;
+    }
+    /* floating image animation */
+    .home-visual img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 30% 70% 70% 30% / 30% 45% 55% 70%;
+      box-shadow: 0 25px 35px -8px rgba(0,80,110,0.4);
+      border: 5px solid white;
+      object-fit: cover;
+      background: #bbd4e5;
+      animation: floatImage 7s infinite ease-in-out;
+    }
+    @keyframes floatImage {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(2deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+    /* about toggle */
+    .toggle-btn {
+      background: #eef2f6;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #1e293b;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #dde7f0;
+    }
+    .toggle-btn:hover {
+      background: #dde7f0;
+      transform: translateY(-2px);
+    }
+    .about-content {
+      display: none;
+      margin-top: 2rem;
+      background: #f1f6fa;
+      padding: 2rem;
+      border-radius: 1.5rem;
+    }
+    .about-flex {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .about-flex img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+      border: 4px solid white;
+    }
+    /* services grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.8rem;
+    }
+    .service-card {
+      background: #f9fcff;
+      border-radius: 1.5rem;
+      padding: 2rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: 1px solid #e9f0f5;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.02);
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      border-color: #bdd8eb;
+      box-shadow: 0 18px 25px -8px rgba(27,74,95,0.15);
+    }
+    .service-card h3 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #114a62;
+    }
+    .service-content {
+      display: none;
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 1px dashed #aac3d4;
+      color: #2c4556;
+    }
+    /* projects grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.8rem;
+    }
+    .project-card {
+      background: #ffffff;
+      border-radius: 1.8rem;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.02);
+      transition: 0.2s;
+      border: 1px solid #e2eef5;
+      cursor: pointer;
+    }
+    .project-card:hover {
+      box-shadow: 0 18px 28px -8px rgba(0,70,100,0.15);
+      transform: scale(1.01);
+    }
+    .project-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      background: #cfdee9;
+    }
+    .project-info {
+      padding: 1.2rem 1.2rem 1.5rem;
+    }
+    .project-content {
+      display: none;
+      margin-top: 0.8rem;
+      background: #f0f7fd;
+      padding: 1rem;
+      border-radius: 1rem;
+    }
+    .project-content a {
+      color: #1b4a5f;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .project-content a:hover {
+      text-decoration: underline;
+    }
+    /* add project section */
+    .add-project-section {
+      margin-top: 2.5rem;
+      background: #f3f9ff;
+      border-radius: 1.8rem;
+      padding: 1.8rem 2rem;
+      border: 1px solid #d4e2f0;
+    }
+    .add-project-section h3 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #114a62;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+      align-items: flex-end;
+    }
+    .form-group {
+      flex: 1 1 200px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #1e4a6b;
+      margin-bottom: 0.3rem;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1.5px solid #cbddee;
+      border-radius: 60px;
+      font-size: 0.95rem;
+      outline: none;
+      background: white;
+    }
+    .form-group input:focus {
+      border-color: #1e4a6b;
+      box-shadow: 0 0 0 3px rgba(30,74,107,0.2);
+    }
+    .add-project-btn {
+      background: #1e4a6b;
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 0.8rem 2.5rem;
+      border-radius: 60px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 1px solid #1e4a6b;
+      font-size: 1rem;
+    }
+    .add-project-btn:hover {
+      background: #0f3b52;
+      transform: translateY(-3px);
+    }
+    /* ---------- SKILLS: EACH TAG SHOWS DESCRIPTION & IMAGE ---------- */
+    .skills-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin-bottom: 2rem;
+    }
+    .skill-tag {
+      background: #ecf7ff;
+      color: #124c66;
+      padding: 0.8rem 1.6rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: 1px solid #b9d6ef;
+      transition: 0.15s;
+      cursor: pointer;
+    }
+    .skill-tag:hover {
+      background: #1e4a6b;
+      color: white;
+      border-color: #1e4a6b;
+      transform: scale(1.02);
+      box-shadow: 0 6px 12px rgba(0,60,90,0.2);
+    }
+    /* skill display area (description + image) */
+    .skill-detail-panel {
+      margin-top: 2.2rem;
+      background: #f0f7fe;
+      border-radius: 1.8rem;
+      padding: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2rem;
+      border: 1px solid #caddf0;
+      min-height: 180px;
+    }
+    .skill-desc {
+      flex: 2 1 260px;
+    }
+    .skill-desc p {
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+    .skill-desc strong {
+      color: #1b4a5f;
+      font-size: 1.6rem;
+    }
+    .skill-desc i {
+      color: #256b85;
+    }
+    .skill-img {
+      flex: 0 0 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .skill-img img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid white;
+      box-shadow: 0 10px 18px rgba(0,0,0,0.1);
+      background: #b0cde0;
+    }
+    /* contact */
+    .contact-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      margin: 2rem 0 1.5rem;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: #f1f7fd;
+      padding: 0.8rem 2rem;
+      border-radius: 60px;
+      width: fit-content;
+      font-size: 1.15rem;
+      border: 1px solid #d2e2f0;
+    }
+    .contact-item i {
+      width: 1.8rem;
+      color: #1b4a5f;
+    }
+    #helloBtn {
+      background: #1e4a6b;
+      border: none;
+      color: white;
+      padding: 0.9rem 2.8rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 8px 14px rgba(0,50,70,0.2);
+    }
+    #helloBtn:hover {
+      background: #0f3b52;
+      transform: translateY(-3px);
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #5f7d95;
+      background: white;
+      border-top: 1px solid #d9e7f2;
+      margin-top: 3rem;
+    }
+    @media (max-width: 700px) {
+      header h1 { font-size: 2rem; }
+      .home-container { justify-content: center; text-align: center; }
+      .home-stats { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- inner floating text removed, using full page background -->
+    <h1>
+      HIKAM Portfolio 
+      <span class="hikam-badge"><i class="fas fa-star"></i> HIKAM WEBSITE</span>
+    </h1>
+    <nav>
+      <a href="#home"><i class="fas fa-home"></i> Home</a>
+      <a href="#about"><i class="fas fa-user"></i> About</a>
+      <a href="#services"><i class="fas fa-code"></i> Services</a>
+      <a href="#projects"><i class="fas fa-laptop"></i> Projects</a>
+      <a href="#skills"><i class="fas fa-cog"></i> Skills</a>
+      <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+    </nav>
+  </header>
+
+  <!-- HOME PAGE with floating image -->
+  <section id="home">
+    <div class="home-container">
+      <div class="home-intro">
+        <div class="greeting"><i class="fas fa-hand-peace"></i> WELCOME TO MY SPACE</div>
+        <h3>I'm <span>Halima Ismail</span> Khamis</h3>
+        <div class="highlight-line">creative web developer & designer · based in Tanzania</div>
+        <p style="margin-bottom: 1.5rem; color: #34657c;">I craft clean, user‑friendly websites with modern technologies. Let's turn your ideas into digital reality.</p>
+        <div class="home-stats">
+          <div class="stat-item"><span class="stat-number">3+</span> <div class="stat-label">years coding</div></div>
+          <div class="stat-item"><span class="stat-number">12+</span> <div class="stat-label">projects</div></div>
+          <div class="stat-item"><span class="stat-number">100%</span> <div class="stat-label">passion</div></div>
+        </div>
+        <div class="home-cta">
+          <a href="#projects" class="btn-primary"><i class="fas fa-briefcase"></i> View work</a>
+          <a href="#contact" class="btn-secondary"><i class="fas fa-paper-plane"></i> Contact me</a>
+        </div>
+      </div>
+      <div class="home-visual">
+        <!-- floating image (clear) -->
+        <img src="images/mima.JPEG" alt="Halima" onerror="this.src='https://via.placeholder.com/300x300/1e4a6b/white?text=HALIMA'">
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT ME (toggle) -->
+  <section id="about">
+    <h2><i class="fas fa-smile"></i> About Me</h2>
+    <button class="toggle-btn" onclick="toggleAbout()"><i class="fas fa-chevron-down"></i> click to view profile</button>
+    <div class="about-content" id="aboutContent">
+      <div class="about-flex">
+        <img src="images/halima.JPEG" alt="HALIMA ISMAIL KHAMIS" onerror="this.src='https://via.placeholder.com/160/1e4a6b/white?text=HALIMA'">
+        <div class="about-text">
+          <p><strong><i class="fas fa-user-graduate"></i> Name:</strong> HALIMA ISMAIL KHAMIS</p>
+          <p>I love coding, creating websites, and learning new technology. I enjoy building projects that improve my skills and help others. My goal is to deliver professional and creative web solutions.</p>
+          <p><i class="fas fa-map-pin"></i> based in Tanzania · open to freelance</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <h2><i class="fas fa-cogs"></i> My Services</h2>
+    <div class="services-grid">
+      <div class="service-card" onclick="toggleService(this)">
+        <h3><i class="fas fa-laptop-code"></i> Web Development</h3>
+        <div class="service-content">
+          <p>Building responsive and modern websites using HTML, CSS & JavaScript. Focus on clean code and UX.</p>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleService(this)">
+        <h3><i class="fas fa-paint-brush"></i> UI/UX Design</h3>
+        <div class="service-content">
+          <p>Designing attractive and user-friendly interfaces for web and mobile apps.</p>
+        </div>
+      </div>
+      <div class="service-card" onclick="toggleService(this)">
+        <h3><i class="fas fa-chart-line"></i> Project Consultation</h3>
+        <div class="service-content">
+          <p>Helping plan, execute, and manage your web projects efficiently and professionally.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS + ADD PROJECT -->
+  <section id="projects">
+    <h2><i class="fas fa-folder-open"></i> My Projects</h2>
+    <div class="projects-grid" id="projectsContainer">
+      <!-- initial project -->
+      <div class="project-card" onclick="toggleProject(this)">
+        <img src="https://via.placeholder.com/400x200/1e4a6b/white?text=Portfolio+2026" alt="Project preview">
+        <div class="project-info">
+          <p><strong>📁 Portfolio Website</strong></p>
+          <div class="project-content">
+            <p>fully responsive design showcasing my work. Built with HTML/CSS/JS.</p>
+            <a href="#"><i class="fas fa-external-link-alt"></i> view live</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- add project section -->
+    <div class="add-project-section">
+      <h3><i class="fas fa-plus-circle"></i> Add a new project</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label><i class="fas fa-image"></i> Image URL</label>
+          <input type="text" id="projectImage" placeholder="e.g. https://...jpg" value="https://via.placeholder.com/400x200/3a6d8c/white?text=New+Project">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-heading"></i> Project title</label>
+          <input type="text" id="projectTitle" placeholder="e.g. E‑commerce app" value="Creative dashboard">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-align-left"></i> Short description</label>
+          <input type="text" id="projectDesc" placeholder="short description" value="modern UI with react">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-link"></i> Link (optional)</label>
+          <input type="text" id="projectLink" placeholder="https://..." value="#">
+        </div>
+      </div>
+      <button class="add-project-btn" onclick="addStructuredProject()">
+        <i class="fas fa-folder-plus"></i> add this project
+      </button>
+    </div>
+  </section>
+
+  <!-- SKILLS interactive (each tag shows description + image) -->
+  <section id="skills">
+    <h2><i class="fas fa-brain"></i> My Skills</h2>
+    <div class="skills-bank">
+      <div class="skill-tag" onclick="showSkillDetail('HTML5', 'Semantic, accessible markup. I build structured and SEO‑friendly websites.', 'https://via.placeholder.com/100/1e4a6b/white?text=HTML5')">HTML5</div>
+      <div class="skill-tag" onclick="showSkillDetail('CSS3', 'Flex, Grid, animations, responsive design. I make things beautiful.', 'https://via.placeholder.com/100/1e4a6b/white?text=CSS3')">CSS3</div>
+      <div class="skill-tag" onclick="showSkillDetail('JavaScript', 'ES6+, DOM manipulation, fetch API. Interactive experiences.', 'https://via.placeholder.com/100/1e4a6b/white?text=JS')">JavaScript</div>
+      <div class="skill-tag" onclick="showSkillDetail('UI/UX Design', 'Wireframing, prototyping, user research. Design with empathy.', 'https://via.placeholder.com/100/1e4a6b/white?text=UI/UX')">UI/UX Design</div>
+      <div class="skill-tag" onclick="showSkillDetail('Responsive Design', 'Mobile‑first, fluid layouts. Works on every screen.', 'https://via.placeholder.com/100/1e4a6b/white?text=Responsive')">Responsive Design</div>
+      <div class="skill-tag" onclick="showSkillDetail('React', 'Components, hooks, state management. Currently learning.', 'https://via.placeholder.com/100/1e4a6b/white?text=React')">React (basic)</div>
+    </div>
+    <!-- dynamic skill detail panel -->
+    <div id="skillDetailPanel" class="skill-detail-panel">
+      <div class="skill-desc">
+        <p><strong id="skillDetailTitle">HTML5</strong> <i class="fas fa-code"></i></p>
+        <p id="skillDetailText">Semantic, accessible markup. I build structured and SEO‑friendly websites.</p>
+      </div>
+      <div class="skill-img">
+        <img id="skillDetailImage" src="https://via.placeholder.com/100/1e4a6b/white?text=HTML5" alt="skill icon">
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2><i class="fas fa-address-card"></i> Contact Me</h2>
+    <div class="contact-block">
+      <div class="contact-item"><i class="fas fa-envelope"></i> <a href="mailto:halimaismailkhamis@gmail.com">halimaismailkhamis@gmail.com</a></div>
+      <div class="contact-item"><i class="fas fa-phone-alt"></i> <a href="tel:0776521327">0776 521 327</a></div>
+      <div class="contact-item"><i class="fab fa-whatsapp"></i> <a href="https://wa.me/255776521327">Chat on WhatsApp</a></div>
+    </div>
+    <div style="text-align: center;">
+      <button id="helloBtn"><i class="fas fa-heart" style="margin-right: 8px;"></i>Say Hi!</button>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 HIKAM Portfolio — designed with clarity 
+  </footer>
+
+  <script>
+    // toggles
+    function toggleAbout() {
+      const content = document.getElementById('aboutContent');
+      content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    }
+    function toggleService(card) {
+      const content = card.querySelector('.service-content');
+      content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    }
+    function toggleProject(card) {
+      const content = card.querySelector('.project-content');
+      content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Say Hi!
+    document.getElementById('helloBtn').addEventListener('click', () => {
+      alert('👋 Hello! Thanks for visiting my portfolio 😊');
+    });
+
+    // add structured project
+    function addStructuredProject() {
+      const imgUrl = document.getElementById('projectImage').value.trim() || 'https://via.placeholder.com/400x200/3a6d8c/white?text=Project';
+      const title = document.getElementById('projectTitle').value.trim() || 'untitled';
+      const desc = document.getElementById('projectDesc').value.trim() || 'creative project';
+      const link = document.getElementById('projectLink').value.trim() || '#';
+
+      const container = document.getElementById('projectsContainer');
+      const newCard = document.createElement('div');
+      newCard.className = 'project-card';
+      newCard.setAttribute('onclick', 'toggleProject(this)');
+      newCard.innerHTML = `
+        <img src="${imgUrl}" alt="project image" onerror="this.src='https://via.placeholder.com/400x200/1e4a6b/white?text=HIKAM'">
+        <div class="project-info">
+          <p><strong>📌 ${title}</strong></p>
+          <div class="project-content">
+            <p>${desc}</p>
+            <a href="${link}" target="_blank"><i class="fas fa-external-link-alt"></i> preview</a>
+          </div>
+        </div>
+      `;
+      container.appendChild(newCard);
+    }
+
+    // skill detail panel: update description and image
+    function showSkillDetail(title, desc, imgUrl) {
+      document.getElementById('skillDetailTitle').innerText = title;
+      document.getElementById('skillDetailText').innerText = desc;
+      document.getElementById('skillDetailImage').src = imgUrl;
+    }
+    // set default on page load
+    window.onload = function() {
+      // ensure skill panel shows default (HTML5)
+      showSkillDetail('HTML5', 'Semantic, accessible markup. I build structured and SEO‑friendly websites.', 'https://via.placeholder.com/100/1e4a6b/white?text=HTML5');
+    };
+  </script>
+</body>
+</html>
